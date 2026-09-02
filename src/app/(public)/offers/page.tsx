@@ -5,10 +5,15 @@ import { Tag, Calendar, ArrowRight, Sparkles } from 'lucide-react';
 export const dynamic = 'force-dynamic';
 
 export default async function OffersPage() {
-  const offers = await db.offer.findMany({
-    where: { isActive: true },
-    orderBy: { createdAt: 'desc' },
-  });
+  let offers: any[] = [];
+  try {
+    offers = await db.offer.findMany({
+      where: { isActive: true },
+      orderBy: { createdAt: 'desc' },
+    });
+  } catch (e) {
+    console.error('Offers DB fetch error:', e);
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">

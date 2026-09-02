@@ -20,24 +20,27 @@ import { getWhatsAppLink, getServiceInquiryWhatsAppLink } from '@/lib/whatsapp';
 export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
-  // Fetch Featured Services
-  const featuredServices = await db.service.findMany({
-    where: { isActive: true, isFeatured: true },
-    take: 6,
-    include: { category: true },
-  });
+  let featuredServices: any[] = [];
+  let activeOffers: any[] = [];
+  let galleryImages: any[] = [];
 
-  // Fetch Active Offers
-  const activeOffers = await db.offer.findMany({
-    where: { isActive: true },
-    take: 3,
-  });
-
-  // Fetch Gallery Images
-  const galleryImages = await db.galleryImage.findMany({
-    take: 6,
-    orderBy: { displayOrder: 'asc' },
-  });
+  try {
+    featuredServices = await db.service.findMany({
+      where: { isActive: true, isFeatured: true },
+      take: 6,
+      include: { category: true },
+    });
+    activeOffers = await db.offer.findMany({
+      where: { isActive: true },
+      take: 3,
+    });
+    galleryImages = await db.galleryImage.findMany({
+      take: 6,
+      orderBy: { displayOrder: 'asc' },
+    });
+  } catch (e) {
+    console.error('HomePage DB fetch error:', e);
+  }
 
   return (
     <div className="space-y-20 pb-16">
@@ -151,7 +154,7 @@ export default async function HomePage() {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-semibold text-[#1C1917]">
-                    {service.category.name}
+                    {service.category?.name || 'Treatment'}
                   </span>
                 </div>
               )}
@@ -321,7 +324,7 @@ export default async function HomePage() {
                   alt={img.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex items-end">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex items-end">
                   <span className="text-xs font-serif font-bold text-white">
                     {img.title}
                   </span>

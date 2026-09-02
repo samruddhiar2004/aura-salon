@@ -3,9 +3,14 @@ import { db } from '@/lib/db';
 export const dynamic = 'force-dynamic';
 
 export default async function GalleryPage() {
-  const gallery = await db.galleryImage.findMany({
-    orderBy: { displayOrder: 'asc' },
-  });
+  let gallery: any[] = [];
+  try {
+    gallery = await db.galleryImage.findMany({
+      orderBy: { displayOrder: 'asc' },
+    });
+  } catch (e) {
+    console.error('Gallery DB fetch error:', e);
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">

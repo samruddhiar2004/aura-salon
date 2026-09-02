@@ -6,15 +6,20 @@ import { getServiceInquiryWhatsAppLink } from '@/lib/whatsapp';
 export const dynamic = 'force-dynamic';
 
 export default async function ServicesPage() {
-  const categories = await db.serviceCategory.findMany({
-    orderBy: { displayOrder: 'asc' },
-    include: {
-      services: {
-        where: { isActive: true },
-        orderBy: { price: 'asc' },
+  let categories: any[] = [];
+  try {
+    categories = await db.serviceCategory.findMany({
+      orderBy: { displayOrder: 'asc' },
+      include: {
+        services: {
+          where: { isActive: true },
+          orderBy: { price: 'asc' },
+        },
       },
-    },
-  });
+    });
+  } catch (e) {
+    console.error('Services DB fetch error:', e);
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
@@ -53,7 +58,7 @@ export default async function ServicesPage() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {category.services.map((service) => (
+                {category.services.map((service: any) => (
                   <div
                     key={service.id}
                     className="bg-white p-6 rounded-2xl border border-[#E8DEC9] shadow-soft hover:shadow-elevated transition-all flex flex-col justify-between space-y-4 group"
