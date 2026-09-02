@@ -3,7 +3,7 @@ import { db } from '@/lib/db';
 import { Clock, Calendar, MessageSquare, ArrowRight } from 'lucide-react';
 import { getServiceInquiryWhatsAppLink } from '@/lib/whatsapp';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export default async function ServicesPage() {
   const categories = await db.serviceCategory.findMany({

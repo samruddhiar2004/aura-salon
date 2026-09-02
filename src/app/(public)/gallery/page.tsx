@@ -1,6 +1,6 @@
 import { db } from '@/lib/db';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export default async function GalleryPage() {
   const gallery = await db.galleryImage.findMany({

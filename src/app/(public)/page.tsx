@@ -17,7 +17,7 @@ import { db } from '@/lib/db';
 import { siteConfig } from '@/lib/config';
 import { getWhatsAppLink, getServiceInquiryWhatsAppLink } from '@/lib/whatsapp';
 
-export const revalidate = 60; // ISR 1 min
+export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
   // Fetch Featured Services
